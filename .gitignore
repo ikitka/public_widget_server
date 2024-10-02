@@ -1,0 +1,32 @@
+# Операционная система
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
+npm-debug.log*
+
+# Node.js
+node_modules/
+dist/
+build/
+
+# Пакеты
+*.tgz
+*.lock
+
+# IDE/редакторы
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Сборка и кэш
+coverage/
+*.out
+*.tmp
+*.swp
+*.pid
+.cache/
