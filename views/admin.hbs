@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Connected Projects</h1>
+
+    <!-- Таблица проектов -->
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Domain</th>
+                <th>Client ID</th>
+                <th>Access Token</th>
+                <th>Refresh Token</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each projects}}
+            <tr>
+                <td>{{this.domain}}</td>
+                <td>{{this.client_id}}</td>
+                <td style="word-break: break-all; font-size: 12px">{{this.access_token}}</td>
+                <td style="word-break: break-all; font-size: 12px">{{this.refresh_token}}</td>
+                <td></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <!-- Выбор проекта и кнопка для получения информации -->
+    <div class="project-select">
+        <select id="project-select">
+            {{#each projects}}
+            <option value="{{this.domain}}">{{this.domain}}</option>
+            {{/each}}
+        </select>
+        <button id="get-info-btn">Получить инфу</button>
+    </div>
+
+    <!-- Контейнер для отображения информации о проекте -->
+    <div id="info-container"></div>
+
+    <script>
+        document.getElementById('get-info-btn').addEventListener('click', async () => {
+            const domain = document.getElementById('project-select').value;
+            const response = await fetch(`/account-info?domain=${domain}`);
+            const data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                document.getElementById('info-container').innerHTML = `
+                    <h3>Account Information</h3>
+                    <p><strong>ID:</strong> ${data.id}</p>
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Subdomain:</strong> ${data.subdomain}</p>
+                    <p><strong>Country:</strong> ${data.country}</p>
+                `;
+            } else {
+                document.getElementById('info-container').innerHTML = '<p>Error fetching account info.</p>';
+            }
+        });
+    </script>
+</body>
+</html>
